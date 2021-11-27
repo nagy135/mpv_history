@@ -10,6 +10,25 @@ Some of my script use following form to store played youtube videos with name:
 
 This script parses it and allows you to replay those (and more).
 
+# INSTALL
+Run following commands
+```
+git clone https://github.com/nagy135/mpv_history
+cd mpv_history
+sudo make install
+```
+
+# USAGE
+To open stored video in [mpv](https://github.com/mpv-player/mpv)
+```
+mpv_history
+```
+
+To open store its url in clipboard
+```
+mpv_history --clipboard
+```
+
 # DEPENDENCIES
 Currently supports wayland setup only.
 * [fuzzel](https://codeberg.org/dnkl/fuzzel)
