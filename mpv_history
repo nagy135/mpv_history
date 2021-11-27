@@ -25,18 +25,15 @@ if [[ $(cat $HISTORY | wc -l) -eq 0 ]]; then
 fi
 
 # change prompt based on type
-if [[ $1 == '--qutebrowser' ]]; then
-    type=$(echo $1 | tr -d '-' | tr '[:lower:]' '[:upper:]')
-    prompt="$type  "
-elif [[ $1 == '--clipboard' ]]; then
-    type=$(echo $1 | tr -d '-' | tr '[:lower:]' '[:upper:]')
-    prompt="$type  "
-elif [[ $1 == '--chrome' ]]; then
-    type=$(echo $1 | tr -d '-' | tr '[:lower:]' '[:upper:]')
-    prompt="$type  "
+
+if [ "$1" = "--clipboard" ]; then
+    prompt="clipboard  "
+elif [ "$1" = "-h" ] || [ "$1" = "--handler" ]; then
+    [ $# -lt 2 ] && echo "specify handler" && exit 1
+    # use first handler argument as label
+    prompt="$(echo $2 | tr '[:lower:]' '[:upper:]')  "
 else
     prompt="HISTORY  "
-
 fi
 
 # pick using fuzzel
@@ -50,15 +47,15 @@ title=$(echo $chosen | sed "s/\s$SEPARATOR.*//")
 url=$(echo $chosen | sed "s/.*\($SEPARATOR\)\s//")
 
 # perform action
-if [[ $1 == '--clipboard' ]]; then
+if [ $1 = "--clipboard" ]; then
     echo "$url" | wl-copy
     notify-send -i 'none' "Clipboard content" "$url"
     # we dont alter history when copying to clipboard
     exit 0
-elif [[ $1 == '--qutebrowser' ]]; then
-    qutebrowser "$url"
-elif [[ $1 == '--chrome' ]]; then
-    google-chrome-stable "$url"
+elif [ "$1" = "-h" ] || [ "$1" = "--handler" ]; then
+    # run all remaining arguments
+    shift
+    "$@" "$url"
 else
     mpv "$url"
 fi
