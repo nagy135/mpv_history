@@ -24,14 +24,17 @@ if [[ $(cat $HISTORY | wc -l) -eq 0 ]]; then
     exit 0
 fi
 
+CLIPBOARD=0
+HANDLER=0
 # change prompt based on type
-
-if [ "$1" = "--clipboard" ]; then
+if [ "$1" = "-c" ] || [ "$1" = "--clipboard" ]; then
     prompt="clipboard  "
+    CLIPBOARD=1
 elif [ "$1" = "-h" ] || [ "$1" = "--handler" ]; then
     [ $# -lt 2 ] && echo "specify handler" && exit 1
     # use first handler argument as label
     prompt="$(echo $2 | tr '[:lower:]' '[:upper:]')  "
+    HANDLER=1
 else
     prompt="HISTORY  "
 fi
@@ -47,12 +50,12 @@ title=$(echo $chosen | sed "s/\s$SEPARATOR.*//")
 url=$(echo $chosen | sed "s/.*\($SEPARATOR\)\s//")
 
 # perform action
-if [ $1 = "--clipboard" ]; then
+if [ "$CLIPBOARD" -eq 1 ]; then
     echo "$url" | wl-copy
     notify-send -i 'none' "Clipboard content" "$url"
     # we dont alter history when copying to clipboard
     exit 0
-elif [ "$1" = "-h" ] || [ "$1" = "--handler" ]; then
+elif [ "$HANDLER" -eq 1 ]; then
     # run all remaining arguments
     shift
     "$@" "$url"
