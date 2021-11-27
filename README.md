@@ -24,9 +24,22 @@ To open stored video in [mpv](https://github.com/mpv-player/mpv)
 mpv_history
 ```
 
-To open store its url in clipboard
+To paste video url to clipboard
 ```
+mpv_history -c
 mpv_history --clipboard
+```
+
+To open using custom handler
+```
+mpv_history -h qutebrowser
+mpv_history --handler google-chrome-stable
+mpv_history -h google-chrome-stable --incognito
+```
+
+To clear database
+```
+mpv_history --clear
 ```
 
 # DEPENDENCIES
@@ -40,6 +53,4 @@ Currently supports wayland setup only.
 
 # TODO
 * xorg version
-* publish qutebrowser userscript here
 * modify subtube path to support this
-* verify existance of history
