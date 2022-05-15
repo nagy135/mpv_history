@@ -2,8 +2,7 @@
 
 HISTORY="$HOME/.local/share/mpv_history/history"
 SEPARATOR="##@@##@@##"
-
-FUZZEL="fuzzel -l 25 -b 0b0b0bdd -t b2d3d9ff -s 19a85bff -S 0b0b0bff -m f9dc2bff -C 19a85bff -B 2 -d -w 70"
+PICKER="rofi -dmenu -i -p"
 
 # create storage if doesnt exist
 [ -f "$HISTORY" ] \
@@ -39,8 +38,8 @@ else
     prompt="HISTORY  "
 fi
 
-# pick using fuzzel
-chosen=$(tac $HISTORY | sed "s/\s$SEPARATOR.*//" | $FUZZEL -P "$prompt: ")
+# pick
+chosen=$(tac $HISTORY | sed "s/\s$SEPARATOR.*//" | $PICKER "$prompt: ")
 
 [[ $chosen == '' ]] && exit 1
 chosen=$(cat $HISTORY | grep "$chosen" | head -n 1)
